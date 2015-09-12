@@ -1,0 +1,11 @@
+.sass-cache/
+*.suo
+*.dll
+*.js.map
+*.csproj.user
+
+/bin/
+/obj/
+/packages/
+/Scripts/*.js
+/Tests/*.js
