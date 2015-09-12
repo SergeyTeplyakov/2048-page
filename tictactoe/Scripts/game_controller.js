@@ -36,6 +36,28 @@ var Control;
             else if (event instanceof Control.Restart) {
                 this.restart();
             }
+            else if (event instanceof Control.Undo) {
+                this.handleUndo();
+            }
+        };
+        GameController.prototype.handleUndo = function () {
+            var currentWinner = this.grid.winner();
+            var lastMove = this.grid.undoMove();
+            if (!lastMove) {
+                return;
+            }
+            // Making a move on the view
+            this.view.makeMove(lastMove.x, lastMove.y, undefined);
+            if (currentWinner) {
+                this.player(currentWinner).score--;
+            }
+            var gameStatistics = this.getGameStatistics();
+            this.contentStorage.updateGameStatistics(gameStatistics);
+            this.view.updateGameStatistics(gameStatistics);
+            // Keep playing. Need to introduce next player then
+            var nextPlayer = this.grid.nextPlayer();
+            this.view.introduceNextPlayer(this.player(nextPlayer).name);
+            this.contentStorage.updateGameState(this.getGameState());
         };
         GameController.prototype.handleClick = function (x, y) {
             // Argument validation (check for -1 is required for now!)
@@ -46,7 +68,6 @@ var Control;
             var nextValue = this.grid.nextPlayer();
             var moveResult = this.grid.makeMove(x, y);
             // Making a move on the view
-            // TODO: nextValue.toString() provides 1 and 2!
             this.view.makeMove(x, y, nextValue);
             // Checking the results
             if (moveResult instanceof Model.Victory) {
@@ -87,7 +108,6 @@ var Control;
             }
         };
         GameController.prototype.restart = function () {
-            //alert('restarting...');
             var size = this.grid.size;
             var strike = this.grid.strike;
             this.grid = new Model.Grid(size, strike, Model.getAnotherValue(this.grid.firstMove));
@@ -97,14 +117,6 @@ var Control;
             this.view.updateGameState(gameState);
             this.view.introduceNextPlayer(this.player(this.grid.nextPlayer()).name);
         };
-        // Keep playing after winning (allows going over 2048)
-        GameController.prototype.keepPlayingFunc = function () {
-            //this.keepPlaying = true;
-            //this.actuator.continueGame(); // Clear the game won/lost message
-        };
-        //isGameTerminated() {
-        //    return this.over || (this.won && !this.keepPlaying);
-        //}
         GameController.prototype.getGameState = function () {
             return {
                 firstPlayer: this.grid.firstMove,
@@ -117,7 +129,7 @@ var Control;
         GameController.prototype.getGameStatistics = function () {
             return {
                 firstPlayerScore: this.firstPlayer.score,
-                secondPlayerScore: this.secondPlayer.score,
+                secondPlayerScore: this.secondPlayer.score
             };
         };
         return GameController;

@@ -48,7 +48,7 @@ h1.title {
   text-align: right; }
 
 .first-player-container, .second-player-container {
-  width: 40px;
+  width: 60px;
   position: relative;
   display: inline-block;
   background: #bbada0;
@@ -88,10 +88,10 @@ h1.title {
     animation-fill-mode: both; }
 
 .first-player-container:after {
-  content: "Angie (X)"; }
+  content: "Player 1 (X)"; }
 
 .second-player-container:after {
-  content: "Daddy (O)"; }
+  content: "Player 2 (O)"; }
 
 p {
   margin-top: 0;
@@ -638,7 +638,8 @@ hr {
   transition-property: transform; }
   .tile .tile-inner {
     border-radius: 3px;
-    background: #eee4da;
+    /*background: $tile-color;*/
+    background: rgba(238, 228, 218, 0.35);
     text-align: center;
     font-weight: bold;
     z-index: 10;
@@ -762,6 +763,21 @@ hr {
   text-align: center;
   float: right; }
 
+.undo-button {
+  display: inline-block;
+  background: #8f7a66;
+  border-radius: 3px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #f9f6f2;
+  height: 40px;
+  line-height: 42px;
+  display: block;
+  text-align: center;
+  float: right;
+  margin-right: 5px;
+  width: 50px; }
+
 .game-explanation {
   margin-top: 50px; }
 
@@ -784,7 +800,8 @@ hr {
   .first-player-container, .second-player-container {
     margin-top: 0;
     padding: 15px 10px;
-    min-width: 40px; }
+    min-width: 50px;
+    width: 50px; }
 
   .heading {
     margin-bottom: 10px; }
@@ -796,11 +813,19 @@ hr {
     line-height: 1.65; }
 
   .restart-button {
-    width: 42%;
+    width: 50%;
     padding: 0;
     display: block;
     box-sizing: border-box;
     margin-top: 2px; }
+
+  .undo-button {
+    width: 50%;
+    padding: 0;
+    display: block;
+    box-sizing: border-box;
+    margin-top: 2px;
+    margin-right: 5px; }
 
   .game-container {
     margin-top: 10px;

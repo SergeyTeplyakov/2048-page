@@ -7,12 +7,12 @@ var Model;
     })(Model.Tile || (Model.Tile = {}));
     var Tile = Model.Tile;
     function getTileDisplayClass(value) {
-        //return value === Tile.X ? "8" : "16";
         return value === Tile.X ? "X" : "O";
     }
     Model.getTileDisplayClass = getTileDisplayClass;
     function getTileString(value) {
-        return value === Tile.X ? "\u274C" : "\u25EF";
+        //return value === Tile.X ? "\u274C" : "\u25EF";
+        return value === Tile.X ? "\u2715" : "\u25EF";
     }
     Model.getTileString = getTileString;
     function getAnotherValue(value) {

@@ -1,4 +1,4 @@
-/// <reference path="state2.ts"/>
+/// <reference path="state.ts"/>
 var Control;
 (function (Control) {
     var permanentStateKey = "score";

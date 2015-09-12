@@ -1,26 +1,31 @@
 /// <reference path="assert.ts"/>
-/// <reference path="tile2.ts"/>
-/// <reference path="grid2.ts"/>
+/// <reference path="tile.ts"/>
+/// <reference path="grid.ts"/>
 var View;
 (function (View) {
     var GameView = (function () {
         function GameView(firstPlayerName, secondPlayerName) {
+            this.moves = [];
             this.tileContainer = document.querySelector(".tile-container");
             this.firstPlayerScoreContainer = document.querySelector(".first-player-container");
             this.secondPlayerScoreContainer = document.querySelector(".second-player-container");
             this.messageContainer = document.querySelector(".game-message");
             this.gameHintContainer = document.querySelector(".game-intro");
             // TODO: have no idea how to change player names!
-            //this.setPlayerNames(firstPlayerName, secondPlayerName);
         }
         GameView.prototype.introduceNextPlayer = function (playerName) {
             var type = "game-intro";
-            var message = playerName + ", this is your move!";
+            var message = playerName + ", this is your turn!";
             this.gameHintContainer.classList.add(type);
             this.gameHintContainer.getElementsByTagName("p")[0].textContent = message;
         };
         GameView.prototype.makeMove = function (x, y, value) {
-            this.addTile(x, y, value);
+            if (value) {
+                this.addTile(x, y, value);
+            }
+            else {
+                this.removeTile(x, y);
+            }
         };
         // Continues the game (both restart and keep playing)
         GameView.prototype.clearMessage = function () {
@@ -57,6 +62,7 @@ var View;
             });
         };
         GameView.prototype.setPlayerNames = function (firstPlayerName, secondPlayerName) {
+            // NOT IMPLEMENTED!
             //.first - player - container: .first-player-container
             var first = document.querySelector(".first-player-container");
             first.textContent = 'asfasfa';
@@ -83,6 +89,14 @@ var View;
             wrapper.appendChild(inner);
             // Put the tile on the board
             this.tileContainer.appendChild(wrapper);
+            this.moves.push(wrapper);
+        };
+        GameView.prototype.removeTile = function (x, y) {
+            this.clearMessage();
+            var lastMove = this.moves.pop();
+            if (lastMove) {
+                this.tileContainer.removeChild(lastMove);
+            }
         };
         GameView.prototype.applyClasses = function (element, classes) {
             element.setAttribute("class", classes.join(" "));

@@ -14,6 +14,12 @@ var Control;
         return Restart;
     })();
     Control.Restart = Restart;
+    var Undo = (function () {
+        function Undo() {
+        }
+        return Undo;
+    })();
+    Control.Undo = Undo;
     var KeyboardListener = (function () {
         function KeyboardListener(gridSize) {
             this.gridSize = gridSize;
@@ -35,6 +41,7 @@ var Control;
             // Respond to button presses
             this.bindButtonPress(".new-game-button", this.raiseRestart);
             this.bindButtonPress(".restart-button", this.raiseRestart);
+            this.bindButtonPress(".undo-button", this.raiseUndo);
             // Respond to touch event
             // TODO: why not to use grid-container? in this case scope would be even smaller!
             //document.getElementsByClassName()
@@ -53,6 +60,9 @@ var Control;
             if (this.eventHandler) {
                 this.eventHandler(boardEvent);
             }
+        };
+        KeyboardListener.prototype.raiseUndo = function (event) {
+            this.raise(event, new Undo());
         };
         KeyboardListener.prototype.raiseRestart = function (event) {
             this.raise(event, new Restart());
