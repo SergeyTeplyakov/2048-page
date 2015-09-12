@@ -1,7 +1,6 @@
 /// <reference path="assert.ts"/>
-/// <reference path="tile.ts"/>
-/// <reference path="state.ts"/>
-
+/// <reference path="tile2.ts"/>
+/// <reference path="state2.ts"/>
 var Model;
 (function (Model) {
     var Grid = (function () {
@@ -256,4 +255,4 @@ var Model;
         return cells;
     }
 })(Model || (Model = {}));
-//# sourceMappingURL=grid.js.map
+//# sourceMappingURL=grid2.js.map

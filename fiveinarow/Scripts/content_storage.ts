@@ -1,4 +1,4 @@
-﻿/// <reference path="state.ts"/>
+﻿/// <reference path="state2.ts"/>
 
 module Control {
 

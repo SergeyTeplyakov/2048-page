@@ -1,217 +1,282 @@
 /// <reference path="assert.ts"/>
-/// <reference path="tile.ts"/>
-/// <reference path="state.ts"/>
+/// <reference path="tile2.ts"/>
+/// <reference path="state2.ts"/>
 
-var Model;
-(function (Model) {
-    var Grid = (function () {
-        function Grid(size, strike, firstMove, previousState) {
+module Model {
+    export class Grid {
+        // First move is critical for the game
+        firstMove: Tile;
+        public size: number;
+        public strike: number;
+        private cells: Array<Tile[]>;
+        private occupiedCellsCount: number;
+
+        // need to compute and store a winner becuse ther is no way to effectively compute 
+        // the winner for the whole field
+        private currentWinner: Tile;
+
+        constructor(size: number, strike: number, firstMove: Tile, previousState?: Array<Tile[]>) {
             this.size = size;
             this.strike = strike;
             this.occupiedCellsCount = 0;
             this.firstMove = firstMove;
             this.cells = empty(size);
+
             if (previousState) {
                 this.initState(size, previousState);
             }
         }
-        Grid.prototype.nextPlayer = function () {
+
+        public nextPlayer(): Tile {
             // Next player depends not only on the lengths of available cells
             // firstMove == X and occupiedCount == 0 -> X
             // firstMove == X and occupiedCount == 1 -> O
             // firstMove == O and occupiedCount == 0 -> O
             // firstMove == O and occupiedCount == 1 -> X
             // Keep in mind, that Value.X is 1!
-            var gameStatus = this.gameStatus();
-            if (gameStatus !== Model.GameStatus.KeepPlaying) {
+            let gameStatus = this.gameStatus();
+
+            if (gameStatus !== GameStatus.KeepPlaying) {
                 return undefined;
             }
-            return ((this.occupiedCellsCount + this.firstMove) % 2 === 1) ? Model.Tile.X : Model.Tile.O;
-        };
-        Grid.prototype.getState = function (x, y) {
+
+            return ((this.occupiedCellsCount + this.firstMove) % 2 === 1) ? Tile.X : Tile.O;
+        }
+
+        public getState(x: number, y: number): Tile {
             this.checkBounds(x, y);
+
             return this.cells[x][y];
-        };
-        Grid.prototype.gameStatus = function () {
+        }
+
+        public gameStatus(): GameStatus {
             if (this.currentWinner !== undefined) {
-                return Model.GameStatus.Victory;
+                return GameStatus.Victory;
             }
+
             if (this.isFull()) {
-                return Model.GameStatus.Draw;
+                return GameStatus.Draw;
             }
-            return Model.GameStatus.KeepPlaying;
-        };
-        Grid.prototype.isOccupied = function (x, y) {
+
+            return GameStatus.KeepPlaying;
+        }
+
+        public isOccupied(x: number, y: number): boolean {
             return this.getState(x, y) ? true : false;
-        };
-        Grid.prototype.makeMove = function (x, y, value) {
+        }
+
+        public makeMove(x: number, y: number, value?: Tile): MoveResult {
             if (this.isOccupied(x, y)) {
-                throw new Error("Position (" + x + ", " + y + ") was already occupied");
+                throw new Error(`Position (${x}, ${y}) was already occupied`);
             }
+
             value = value || this.nextPlayer();
             this.checkBounds(x, y);
+
             this.occupiedCellsCount++;
             this.cells[x][y] = value;
-            var winner = this.checkWinner({ x: x, y: y });
+
+            let winner = this.checkWinner({x: x, y: y});
             if (winner !== undefined) {
                 this.currentWinner = winner;
-                return new Model.Victory(winner);
+                return new Victory(winner);
             }
             else if (this.isFull()) {
-                return new Model.Draw();
+                return new Draw();
             }
-            return new Model.KeepPlaying();
-        };
-        Grid.prototype.winner = function () {
+
+            return new KeepPlaying();
+        }
+
+        winner(): Tile {
             return this.currentWinner;
-        };
+        }
+
         //public nonEmptyCells(): { x: number, y: number, value: Tile }[] {
         //    let tiles = [];
+
         //    this.eachCell((x, y, value) => {
         //        if (value) {
         //            tiles.push({ x: x, y: y, value: value});
         //        }
         //    });
+
         //    return tiles;
         //}
+
         //public emptyCells(): { x: number, y: number, value: Tile }[] {
         //    let tiles = [];
+
         //    this.eachCell((x, y, value) => {
         //        if (!value) {
         //            tiles.push({ x: x, y: y, value: value });
         //        }
         //    });
+
         //    return tiles;
         //}
-        Grid.prototype.serialize = function () {
-            var cellState = new Array(this.size);
+
+        public serialize(): { size: number, longestStrike: number, cells: Array<Tile[]> } {
+            var cellState = new Array<Tile[]>(this.size);
+
             for (var x = 0; x < this.size; x++) {
-                var row = cellState[x] = new Array(this.size);
+                var row = cellState[x] = new Array<Tile>(this.size);
+
                 for (var y = 0; y < this.size; y++) {
                     row.push(this.cells[x][y] ? this.cells[x][y] : null);
                 }
             }
+
             return {
                 size: this.size,
                 longestStrike: this.strike,
                 cells: cellState
             };
-        };
+        }
+
         // Checks whether grid is full or not
-        Grid.prototype.isFull = function () {
+        private isFull(): boolean {
             return this.emptyCellsCount() === 0;
-        };
-        Grid.prototype.emptyCellsCount = function () {
+        }
+
+        public emptyCellsCount() {
             return this.size * this.size - this.occupiedCellsCount;
-        };
-        Grid.prototype.checkBounds = function (x, y) {
+        }
+
+        private checkBounds(x: number, y: number) {
             if (x < 0 || x >= this.size) {
-                throw new Error("Out of bounds error. x: " + x + ", size: " + this.size);
+                throw new Error(`Out of bounds error. x: ${x}, size: ${this.size}`);
             }
             if (y < 0 || y >= this.size) {
-                throw new Error("Out of bounds error. x: " + x + ", size: " + this.size);
+                throw new Error(`Out of bounds error. x: ${x}, size: ${this.size}`);
             }
-        };
-        /*internal*/ Grid.prototype.longestStrike = function (array) {
-            var result = { value: undefined, count: 0 };
-            var current = { value: undefined, count: 0 };
-            for (var _i = 0; _i < array.length; _i++) {
-                var t = array[_i];
+        }
+
+        /*internal*/ longestStrike(array: Tile[]): { value: Tile, count: number } {
+            let result: { value: Tile, count: number } = { value: undefined, count: 0 };
+
+            let current: { value: Tile, count: number } = { value: undefined, count: 0 };
+            for (let t of array) {
                 if (t) {
                     if (current.value === t) {
                         current.count++;
-                    }
-                    else {
+                    } else {
                         current.value = t;
                         current.count = 1;
                     }
                 }
+
                 if (current.count > result.count) {
-                    result = { value: current.value, count: current.count };
+                    result = {value: current.value, count: current.count};
                 }
             }
+
             return result;
-        };
-        /*internal*/ Grid.prototype.getSubArray = function (first, second) {
-            var x = first.x;
-            var y = first.y;
-            var result = [];
-            var dx = (second.x > first.x) ? 1 : (second.x < first.x) ? -1 : 0;
-            var dy = (second.y > first.y) ? 1 : (second.y < first.y) ? -1 : 0;
+        }
+
+        /*internal*/ getSubArray(first: { x: number, y: number }, second: { x: number, y: number }): Tile[] {
+            let x = first.x;
+            let y = first.y;
+
+            let result: Tile[] = [];
+            let dx = (second.x > first.x) ? 1 : (second.x < first.x) ? -1 : 0;
+            let dy = (second.y > first.y) ? 1 : (second.y < first.y) ? -1 : 0;
+
             Debug.assert(dx !== 0 || dy !== 0, "dx or dy should not be 0");
             //Debug.assert(dx === 1, 'dx === 1');
             //Debug.assert(dy === -1, `dy === -1. dx = ${dx}, dy = ${dy}. first: (${first.x}, ${first.y}), second: (${second.x}, ${second.y})`);
-            while (true) {
+            while (true)
+            {
                 if (this.withinBounds(x, y)) {
                     result.push(this.cells[x][y]);
                 }
+
                 if (x === second.x && y === second.y) {
                     break;
                 }
+
                 x += dx;
                 y += dy;
             }
+
             return result;
-        };
-        Grid.prototype.withinBounds = function (x, y) {
+        }
+
+        private withinBounds(x: number, y: number) {
             return (x >= 0 && x < this.size) && (y >= 0 && y < this.size);
-        };
-        Grid.prototype.checkWinner2 = function (p) {
-            var diff = this.strike - 1;
-            var upperRight = { x: p.x + diff, y: p.y + diff };
-            var bottomLeft = { x: p.x - diff, y: p.y - diff };
-            var bottomLeftToUpperRight = this.getSubArray(bottomLeft, upperRight);
-            var candidate = this.longestStrike(bottomLeftToUpperRight);
+        }
+
+        public checkWinner2(p: { x: number, y: number }): Tile {
+            let diff = this.strike - 1;
+            
+            let upperRight = { x: p.x + diff, y: p.y + diff };
+            let bottomLeft = { x: p.x - diff, y: p.y - diff };
+
+            let bottomLeftToUpperRight = this.getSubArray(bottomLeft, upperRight);
+
+            let candidate = this.longestStrike(bottomLeftToUpperRight);
             if (candidate.value && candidate.count === this.strike) {
                 return candidate.value;
             }
             return undefined;
-        };
-        // Super primitive implementation that checks a winner.
-        Grid.prototype.checkWinner = function (p) {
+        }
+
+// Super primitive implementation that checks a winner.
+        public checkWinner(p: {x: number, y: number}): Tile {
             // Need to get 4 arrays with max 2*strike - 1 elements and look for a strike in each of them
-            var diff = this.strike - 1;
-            var leftMost = { x: p.x, y: p.y - diff };
-            var leftUpper = { x: p.x + diff, y: p.y - diff };
-            var topMost = { x: p.x + diff, y: p.y };
-            var upperRight = { x: p.x + diff, y: p.y + diff };
-            var rightMost = { x: p.x, y: p.y + diff };
-            var bottomRight = { x: p.x - diff, y: p.y + diff };
-            var bottomMost = { x: p.x - diff, y: p.y };
-            var bottomLeft = { x: p.x - diff, y: p.y - diff };
-            var bottomLeftToUpperRight = this.getSubArray(bottomLeft, upperRight);
-            var leftToRight = this.getSubArray(leftMost, rightMost);
-            var upperLeftToBottomRight = this.getSubArray(leftUpper, bottomRight);
-            var topToBottom = this.getSubArray(bottomMost, topMost);
-            for (var _i = 0, _a = [bottomLeftToUpperRight, leftToRight, upperLeftToBottomRight, topToBottom]; _i < _a.length; _i++) {
-                var array = _a[_i];
-                var candidate = this.longestStrike(array);
+            let diff = this.strike - 1;
+
+            let leftMost = { x: p.x, y: p.y - diff };
+            let leftUpper = { x: p.x + diff, y: p.y - diff };
+            let topMost = { x: p.x + diff, y: p.y };
+            let upperRight = { x: p.x + diff, y: p.y + diff };
+            let rightMost = { x: p.x, y: p.y + diff };
+            let bottomRight = { x: p.x - diff, y: p.y + diff };
+            let bottomMost = { x: p.x - diff, y: p.y };
+            let bottomLeft = { x: p.x - diff, y: p.y - diff };
+
+            let bottomLeftToUpperRight = this.getSubArray(bottomLeft, upperRight);
+            let leftToRight = this.getSubArray(leftMost, rightMost);
+            let upperLeftToBottomRight = this.getSubArray(leftUpper, bottomRight);
+            let topToBottom = this.getSubArray(bottomMost, topMost);
+
+            for (let array of [bottomLeftToUpperRight, leftToRight, upperLeftToBottomRight, topToBottom]) {
+                let candidate = this.longestStrike(array);
                 if (candidate.value && candidate.count === this.strike) {
                     return candidate.value;
                 }
             }
+
             return undefined;
             //let diag1 = [this.cells[0][0], this.cells[1][1], this.cells[2][2]];
             //let diag2 = [this.cells[2][0], this.cells[1][1], this.cells[0][2]];
+
             //let result: Tile;
+
             //if ((result = this.allTheSame(diag1)) !== undefined) {
             //    return result;
             //}
+
             //if ((result = this.allTheSame(diag2)) !== undefined) {
             //    return result;
             //}
+
             //for (let n = 0; n < this.size; n++) {
             //    let row = [this.cells[n][0], this.cells[n][1], this.cells[n][2]];
             //    let col = [this.cells[0][n], this.cells[1][n], this.cells[2][n]];
+
             //    if ((result = this.allTheSame(row)) !== undefined) {
             //        return result;
             //    }
+
             //    if ((result = this.allTheSame(col)) !== undefined) {
             //        return result;
             //    }
             //}
+
             //return undefined;
-        };
+        }
+
         //private allTheSame(array: Tile[]): Tile {
         //    if (array.every(t => t === Tile.X)) {
         //        return Tile.X;
@@ -219,41 +284,75 @@ var Model;
         //    if (array.every(t => t === Tile.O)) {
         //        return Tile.O;
         //    }
+
         //    return undefined;
         //}
+
         // Call callback for every cell  
-        Grid.prototype.eachCell = function (callback) {
+        private eachCell(callback: (x: number, y: number, tile: Tile) => void): void {
             for (var x = 0; x < this.size; x++) {
                 for (var y = 0; y < this.size; y++) {
                     callback(x, y, this.cells[x][y]);
                 }
             }
-        };
-        Grid.prototype.initState = function (size, state) {
-            var cells = new Array(size);
+        }
+
+        initState(size: number, state: Array<Tile[]>): Tile[][] {
+            var cells = new Array<Tile[]>(size);
+
             for (var x = 0; x < size; x++) {
                 //var row = cells[x] = new Array<Tile>(size);
+
                 for (var y = 0; y < size; y++) {
-                    var tile = state[x][y];
+                    let tile = state[x][y];
+
                     if (tile) {
                         this.makeMove(x, y, tile);
                     }
                 }
             }
+
             return cells;
-        };
-        return Grid;
-    })();
-    Model.Grid = Grid;
+        }
+    }
+
     //---------------------------------------------------------------------------------
     // Free helper functions
     //---------------------------------------------------------------------------------
-    function empty(size) {
-        var cells = new Array(size);
-        for (var x = 0; x < size; x++) {
-            cells[x] = new Array(size);
+
+    function empty(size: number): Array<Tile[]> {
+        var cells = new Array<Tile[]>(size);
+
+        for (let x = 0; x < size; x++) {
+            cells[x] = new Array<Tile>(size);
         }
+
         return cells;
     }
-})(Model || (Model = {}));
-//# sourceMappingURL=grid.js.map
+
+    //export function getSubArray(first: { x: number, y: number }, second: { x: number, y: number }): Tile[] {
+    //    Debug.assert(first.x <= second.x || first.y <= second.y, `first position should be in upper left and second position - bottom right. first: (${first.x}, ${first.y}), second: (${second.x}, ${second.y})`);
+
+    //    let current = { x: first.x, y: first.y };
+
+    //    let result: Tile[] = [];
+
+    //    let dx = (second.x - first.x) === 0 ? 0 : 1;
+    //    let dy = (second.y - first.y) === 0 ? 0 : 1;
+
+    //    Debug.assert(dx !== 0 || dy !== 0, "dx or dy should not be 0");
+
+    //    do {
+    //        if (this.withinBounds(current.x, current.y)) {
+    //            result.push(this.cells[current.x][current.y]);
+    //        }
+
+    //        current.x += dx;
+    //        current.y += dy;
+
+    //    } while (current.x !== second.x && current.y !== second.y);
+
+    //    return result;
+    //}
+
+}

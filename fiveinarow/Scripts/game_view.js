@@ -1,6 +1,6 @@
 /// <reference path="assert.ts"/>
-/// <reference path="tile.ts"/>
-/// <reference path="grid.ts"/>
+/// <reference path="tile2.ts"/>
+/// <reference path="grid2.ts"/>
 var View;
 (function (View) {
     var GameView = (function () {
