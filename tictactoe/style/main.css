@@ -114,7 +114,7 @@ hr {
   margin-bottom: 30px; }
 
 .container {
-  width: 500px;
+  width: 300px;
   margin: 0 auto; }
 
 @-webkit-keyframes fade-in {
@@ -135,7 +135,7 @@ hr {
 .game-container {
   margin-top: 10px;
   position: relative;
-  padding: 5px;
+  padding: 4px;
   cursor: default;
   -webkit-touch-callout: none;
   -ms-touch-callout: none;
@@ -146,8 +146,8 @@ hr {
   touch-action: none;
   background: #bbada0;
   border-radius: 6px;
-  width: 500px;
-  height: 500px;
+  width: 300px;
+  height: 300px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
@@ -201,7 +201,7 @@ hr {
   z-index: 1; }
 
 .grid-row {
-  margin-bottom: 5px; }
+  margin-bottom: 4px; }
   .grid-row:last-child {
     margin-bottom: 0; }
   .grid-row:after {
@@ -210,9 +210,9 @@ hr {
     clear: both; }
 
 .grid-cell {
-  width: 160px;
-  height: 160px;
-  margin-right: 5px;
+  width: 94.66667px;
+  height: 94.66667px;
+  margin-right: 4px;
   float: left;
   border-radius: 3px;
   background: rgba(238, 228, 218, 0.35); }
@@ -224,45 +224,45 @@ hr {
   z-index: 2; }
 
 .tile, .tile .tile-inner {
-  width: 160px;
-  height: 160px;
-  line-height: 160px; }
+  width: 95px;
+  height: 95px;
+  line-height: 95px; }
 .tile.tile-position-1-1 {
   -webkit-transform: translate(0px, 0px);
   -moz-transform: translate(0px, 0px);
   transform: translate(0px, 0px); }
 .tile.tile-position-1-2 {
-  -webkit-transform: translate(0px, 165px);
-  -moz-transform: translate(0px, 165px);
-  transform: translate(0px, 165px); }
+  -webkit-transform: translate(0px, 98px);
+  -moz-transform: translate(0px, 98px);
+  transform: translate(0px, 98px); }
 .tile.tile-position-1-3 {
-  -webkit-transform: translate(0px, 330px);
-  -moz-transform: translate(0px, 330px);
-  transform: translate(0px, 330px); }
+  -webkit-transform: translate(0px, 197px);
+  -moz-transform: translate(0px, 197px);
+  transform: translate(0px, 197px); }
 .tile.tile-position-2-1 {
-  -webkit-transform: translate(165px, 0px);
-  -moz-transform: translate(165px, 0px);
-  transform: translate(165px, 0px); }
+  -webkit-transform: translate(98px, 0px);
+  -moz-transform: translate(98px, 0px);
+  transform: translate(98px, 0px); }
 .tile.tile-position-2-2 {
-  -webkit-transform: translate(165px, 165px);
-  -moz-transform: translate(165px, 165px);
-  transform: translate(165px, 165px); }
+  -webkit-transform: translate(98px, 98px);
+  -moz-transform: translate(98px, 98px);
+  transform: translate(98px, 98px); }
 .tile.tile-position-2-3 {
-  -webkit-transform: translate(165px, 330px);
-  -moz-transform: translate(165px, 330px);
-  transform: translate(165px, 330px); }
+  -webkit-transform: translate(98px, 197px);
+  -moz-transform: translate(98px, 197px);
+  transform: translate(98px, 197px); }
 .tile.tile-position-3-1 {
-  -webkit-transform: translate(330px, 0px);
-  -moz-transform: translate(330px, 0px);
-  transform: translate(330px, 0px); }
+  -webkit-transform: translate(197px, 0px);
+  -moz-transform: translate(197px, 0px);
+  transform: translate(197px, 0px); }
 .tile.tile-position-3-2 {
-  -webkit-transform: translate(330px, 165px);
-  -moz-transform: translate(330px, 165px);
-  transform: translate(330px, 165px); }
+  -webkit-transform: translate(197px, 98px);
+  -moz-transform: translate(197px, 98px);
+  transform: translate(197px, 98px); }
 .tile.tile-position-3-3 {
-  -webkit-transform: translate(330px, 330px);
-  -moz-transform: translate(330px, 330px);
-  transform: translate(330px, 330px); }
+  -webkit-transform: translate(197px, 197px);
+  -moz-transform: translate(197px, 197px);
+  transform: translate(197px, 197px); }
 
 .tile {
   position: absolute;
@@ -279,7 +279,7 @@ hr {
     text-align: center;
     font-weight: bold;
     z-index: 10;
-    font-size: 105px; }
+    font-size: 40pt; }
   .tile.tile-X .tile-inner {
     color: #ff3333;
     /*background: #debda7;*/ }
@@ -417,7 +417,7 @@ hr {
 .game-explanation {
   margin-top: 50px; }
 
-@media screen and (max-width: 510px) {
+@media screen and (max-width: 310px) {
   html, body {
     font-size: 15px; }
 
@@ -466,7 +466,7 @@ hr {
   .game-container {
     margin-top: 10px;
     position: relative;
-    padding: 5px;
+    padding: 4px;
     cursor: default;
     -webkit-touch-callout: none;
     -ms-touch-callout: none;
@@ -477,8 +477,8 @@ hr {
     touch-action: none;
     background: #bbada0;
     border-radius: 6px;
-    width: 500px;
-    height: 500px;
+    width: 300px;
+    height: 300px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box; }
@@ -532,7 +532,7 @@ hr {
     z-index: 1; }
 
   .grid-row {
-    margin-bottom: 5px; }
+    margin-bottom: 4px; }
     .grid-row:last-child {
       margin-bottom: 0; }
     .grid-row:after {
@@ -541,9 +541,9 @@ hr {
       clear: both; }
 
   .grid-cell {
-    width: 160px;
-    height: 160px;
-    margin-right: 5px;
+    width: 94.66667px;
+    height: 94.66667px;
+    margin-right: 4px;
     float: left;
     border-radius: 3px;
     background: rgba(238, 228, 218, 0.35); }
@@ -555,45 +555,45 @@ hr {
     z-index: 2; }
 
   .tile, .tile .tile-inner {
-    width: 160px;
-    height: 160px;
-    line-height: 160px; }
+    width: 95px;
+    height: 95px;
+    line-height: 95px; }
   .tile.tile-position-1-1 {
     -webkit-transform: translate(0px, 0px);
     -moz-transform: translate(0px, 0px);
     transform: translate(0px, 0px); }
   .tile.tile-position-1-2 {
-    -webkit-transform: translate(0px, 165px);
-    -moz-transform: translate(0px, 165px);
-    transform: translate(0px, 165px); }
+    -webkit-transform: translate(0px, 98px);
+    -moz-transform: translate(0px, 98px);
+    transform: translate(0px, 98px); }
   .tile.tile-position-1-3 {
-    -webkit-transform: translate(0px, 330px);
-    -moz-transform: translate(0px, 330px);
-    transform: translate(0px, 330px); }
+    -webkit-transform: translate(0px, 197px);
+    -moz-transform: translate(0px, 197px);
+    transform: translate(0px, 197px); }
   .tile.tile-position-2-1 {
-    -webkit-transform: translate(165px, 0px);
-    -moz-transform: translate(165px, 0px);
-    transform: translate(165px, 0px); }
+    -webkit-transform: translate(98px, 0px);
+    -moz-transform: translate(98px, 0px);
+    transform: translate(98px, 0px); }
   .tile.tile-position-2-2 {
-    -webkit-transform: translate(165px, 165px);
-    -moz-transform: translate(165px, 165px);
-    transform: translate(165px, 165px); }
+    -webkit-transform: translate(98px, 98px);
+    -moz-transform: translate(98px, 98px);
+    transform: translate(98px, 98px); }
   .tile.tile-position-2-3 {
-    -webkit-transform: translate(165px, 330px);
-    -moz-transform: translate(165px, 330px);
-    transform: translate(165px, 330px); }
+    -webkit-transform: translate(98px, 197px);
+    -moz-transform: translate(98px, 197px);
+    transform: translate(98px, 197px); }
   .tile.tile-position-3-1 {
-    -webkit-transform: translate(330px, 0px);
-    -moz-transform: translate(330px, 0px);
-    transform: translate(330px, 0px); }
+    -webkit-transform: translate(197px, 0px);
+    -moz-transform: translate(197px, 0px);
+    transform: translate(197px, 0px); }
   .tile.tile-position-3-2 {
-    -webkit-transform: translate(330px, 165px);
-    -moz-transform: translate(330px, 165px);
-    transform: translate(330px, 165px); }
+    -webkit-transform: translate(197px, 98px);
+    -moz-transform: translate(197px, 98px);
+    transform: translate(197px, 98px); }
   .tile.tile-position-3-3 {
-    -webkit-transform: translate(330px, 330px);
-    -moz-transform: translate(330px, 330px);
-    transform: translate(330px, 330px); }
+    -webkit-transform: translate(197px, 197px);
+    -moz-transform: translate(197px, 197px);
+    transform: translate(197px, 197px); }
 
   .tile .tile-inner {
     font-size: 35px; }
