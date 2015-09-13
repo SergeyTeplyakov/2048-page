@@ -1,8 +1,8 @@
 @import "helpers";
 @import "fonts/clear-sans.css";
 
-$field-width: 700px;
-$grid-spacing: 5px;
+$field-width: 800px;
+$grid-spacing: 6px;
 $grid-row-cells: 10;
 $tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
 $tile-border-radius: 3px;
@@ -21,6 +21,7 @@ $game-container-margin-top: 10px;
 $game-container-background: #bbada0;
 
 $transition-speed: 100ms;
+$tile-font-size: 40pt;
 
 html, body {
   margin: 0;
@@ -41,7 +42,7 @@ body {
 }
 
 h1.title {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: bold;
   margin: 0;
   display: block;
@@ -79,6 +80,7 @@ h1.title {
   border-radius: 3px;
   color: white;
   margin-top: 8px;
+  margin-bottom: 8px;
   text-align: center;
 
   &:after {
@@ -325,7 +327,7 @@ hr {
     font-weight: bold;
     z-index: 10;
 
-    font-size: 55px;
+    font-size: $tile-font-size;
   }
 
   // Movement transition
@@ -417,9 +419,9 @@ hr {
 
 @include smaller($mobile-threshold) {
   // Redefine variables for smaller screens
-  $field-width: 280px;
-  $grid-spacing: 10px;
-  $grid-row-cells: 4;
+  $field-width: 400px;
+  $grid-spacing: 4px;
+  $grid-row-cells: 10;
   $tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
   $tile-border-radius: 3px;
   $game-container-margin-top: 17px;
