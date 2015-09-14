@@ -8,7 +8,7 @@ html, body {
   font-size: 18px; }
 
 body {
-  margin: 80px 0; }
+  margin: 30px 0; }
 
 .heading:after {
   content: "";
@@ -16,7 +16,7 @@ body {
   clear: both; }
 
 h1.title {
-  font-size: 50px;
+  font-size: 30px;
   font-weight: bold;
   margin: 0;
   display: block;
@@ -60,6 +60,7 @@ h1.title {
   border-radius: 3px;
   color: white;
   margin-top: 8px;
+  margin-bottom: 8px;
   text-align: center; }
   .first-player-container:after, .second-player-container:after {
     position: absolute;
@@ -170,9 +171,9 @@ hr {
     .game-container .game-message p {
       font-size: 60px;
       font-weight: bold;
-      height: 60px;
+      height: 40px;
       line-height: 60px;
-      margin-top: 222px; }
+      margin-top: 80px; }
     .game-container .game-message .lower {
       display: block;
       margin-top: 59px; }
@@ -189,8 +190,9 @@ hr {
       .game-container .game-message a.keep-playing-button {
         display: none; }
     .game-container .game-message.game-won {
-      background: rgba(237, 194, 46, 0.5);
-      color: #f9f6f2; }
+      background: rgba(133, 180, 210, 0.5);
+      color: #f9f6f2;
+      font-size: medium; }
       .game-container .game-message.game-won a.keep-playing-button {
         display: inline-block; }
     .game-container .game-message.game-won, .game-container .game-message.game-over {
@@ -279,13 +281,31 @@ hr {
     text-align: center;
     font-weight: bold;
     z-index: 10;
-    font-size: 40pt; }
+    font-size: 38pt; }
   .tile.tile-X .tile-inner {
     color: #ff3333;
     /*background: #debda7;*/ }
+    @media screen and (max-width: 320px) {
+      .tile.tile-X .tile-inner {
+        font-size: 25px; } }
   .tile.tile-O .tile-inner {
     color: #1b4561;
     /*background: green;*/ }
+    @media screen and (max-width: 320px) {
+      .tile.tile-O .tile-inner {
+        font-size: 25px; } }
+  .tile.tile-X-Win .tile-inner {
+    color: #ff3333;
+    box-shadow: 0 0 30px 5px #f3d774, inset 0 0 0 1px white; }
+    @media screen and (max-width: 320px) {
+      .tile.tile-X-Win .tile-inner {
+        font-size: 25px; } }
+  .tile.tile-O-Win .tile-inner {
+    color: #1b4561;
+    box-shadow: 0 0 30px 5px #f3d774, inset 0 0 0 1px white; }
+    @media screen and (max-width: 320px) {
+      .tile.tile-O-Win .tile-inner {
+        font-size: 25px; } }
 
 @-webkit-keyframes appear {
   0% {
@@ -417,7 +437,7 @@ hr {
 .game-explanation {
   margin-top: 50px; }
 
-@media screen and (max-width: 310px) {
+@media screen and (max-width: 320px) {
   html, body {
     font-size: 15px; }
 
@@ -430,38 +450,49 @@ hr {
     margin-top: 15px; }
 
   .container {
-    width: 280px;
+    width: 300px;
     margin: 0 auto; }
+
+  .game-container {
+    width: 150px; }
 
   .first-player-container, .second-player-container {
     margin-top: 0;
     padding: 15px 10px;
-    min-width: 50px;
-    width: 50px; }
+    min-width: 60px;
+    width: 60px;
+    font-size: medium; }
+
+  .first-player-container:after {
+    content: "Plr 1 (X)"; }
+
+  .second-player-container:after {
+    content: "Plr 2 (O)"; }
 
   .heading {
     margin-bottom: 10px; }
 
   .game-intro {
-    width: 55%;
+    width: 50%;
     display: block;
     box-sizing: border-box;
     line-height: 1.65; }
 
   .restart-button {
-    width: 50%;
-    padding: 0;
-    display: block;
-    box-sizing: border-box;
-    margin-top: 2px; }
-
-  .undo-button {
-    width: 50%;
+    width: 20%;
     padding: 0;
     display: block;
     box-sizing: border-box;
     margin-top: 2px;
-    margin-right: 5px; }
+    /*margin-right: 0;*/ }
+
+  .undo-button {
+    width: 20%;
+    padding: 0;
+    display: block;
+    box-sizing: border-box;
+    margin-top: 2px;
+    /*margin-right: 0;*/ }
 
   .game-container {
     margin-top: 10px;
@@ -501,9 +532,9 @@ hr {
       .game-container .game-message p {
         font-size: 60px;
         font-weight: bold;
-        height: 60px;
+        height: 40px;
         line-height: 60px;
-        margin-top: 222px; }
+        margin-top: 80px; }
       .game-container .game-message .lower {
         display: block;
         margin-top: 59px; }
@@ -520,8 +551,9 @@ hr {
         .game-container .game-message a.keep-playing-button {
           display: none; }
       .game-container .game-message.game-won {
-        background: rgba(237, 194, 46, 0.5);
-        color: #f9f6f2; }
+        background: rgba(133, 180, 210, 0.5);
+        color: #f9f6f2;
+        font-size: medium; }
         .game-container .game-message.game-won a.keep-playing-button {
           display: inline-block; }
       .game-container .game-message.game-won, .game-container .game-message.game-over {

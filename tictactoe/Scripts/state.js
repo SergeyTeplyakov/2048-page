@@ -19,8 +19,9 @@ var Model;
     })();
     Model.KeepPlaying = KeepPlaying;
     var Victory = (function () {
-        function Victory(winner) {
+        function Victory(winner, strike) {
             this.winner = winner;
+            this.strike = strike;
         }
         return Victory;
     })();

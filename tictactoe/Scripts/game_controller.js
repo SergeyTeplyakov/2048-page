@@ -42,6 +42,10 @@ var Control;
         };
         GameController.prototype.handleUndo = function () {
             var currentWinner = this.grid.winner();
+            // Can't undo if someone won!
+            if (currentWinner) {
+                return;
+            }
             var lastMove = this.grid.undoMove();
             if (!lastMove) {
                 return;
@@ -72,6 +76,7 @@ var Control;
             // Checking the results
             if (moveResult instanceof Model.Victory) {
                 this.player(moveResult.winner).score++;
+                this.view.setWinningStrike(moveResult.winner, moveResult.strike);
                 this.view.victory(this.player(moveResult.winner).name);
                 // Need to store the statistics as well, because game was finished!
                 var gameStatistics = this.getGameStatistics();

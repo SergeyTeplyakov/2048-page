@@ -52,9 +52,9 @@ var Model;
             this.moves.push({ x: x, y: y, state: value });
             this.cells[x][y] = value;
             var winner = this.checkWinner({ x: x, y: y });
-            if (winner !== undefined) {
-                this.currentWinner = winner;
-                return new Model.Victory(winner);
+            if (winner) {
+                this.currentWinner = winner.tile;
+                return new Model.Victory(winner.tile, winner.strike);
             }
             else if (this.isFull()) {
                 return new Model.Draw();
@@ -105,25 +105,30 @@ var Model;
                 throw new Error("Out of bounds error. x: " + x + ", size: " + this.size);
             }
         };
+        /**
+         * Checks the longest 'strike' of any tiles in the specified array.
+        */
         /*internal*/ Grid.prototype.longestStrike = function (array) {
-            var result = { value: undefined, count: 0 };
-            var current = { value: undefined, count: 0 };
-            for (var _i = 0; _i < array.length; _i++) {
-                var t = array[_i];
+            var result = { value: undefined, count: 0, begin: 0 };
+            var current = { value: undefined, count: 0, begin: 0 };
+            for (var index = 0; index < array.length; index++) {
+                var t = array[index];
                 if (t) {
-                    if (current.value === t) {
+                    if (current.value === t.state) {
                         current.count++;
                     }
                     else {
-                        current.value = t;
+                        current.value = t.state;
+                        current.begin = index;
                         current.count = 1;
                     }
                 }
                 if (current.count > result.count) {
-                    result = { value: current.value, count: current.count };
+                    result = { value: current.value, count: current.count, begin: current.begin };
                 }
             }
-            return result;
+            var subArray = array.slice(result.begin, result.begin + result.count);
+            return { value: result.value, strike: subArray };
         };
         /*internal*/ Grid.prototype.getSubArray = function (first, second) {
             var x = first.x;
@@ -136,7 +141,7 @@ var Model;
             //Debug.assert(dy === -1, `dy === -1. dx = ${dx}, dy = ${dy}. first: (${first.x}, ${first.y}), second: (${second.x}, ${second.y})`);
             while (true) {
                 if (this.withinBounds(x, y)) {
-                    result.push(this.cells[x][y]);
+                    result.push({ x: x, y: y, state: this.cells[x][y] });
                 }
                 if (x === second.x && y === second.y) {
                     break;
@@ -171,18 +176,11 @@ var Model;
             for (var _i = 0, _a = [bottomLeftToUpperRight, leftToRight, upperLeftToBottomRight, topToBottom]; _i < _a.length; _i++) {
                 var array = _a[_i];
                 var candidate = this.longestStrike(array);
-                if (candidate.value && candidate.count === this.strike) {
-                    return candidate.value;
+                if (candidate.value && candidate.strike.length >= this.strike) {
+                    return { tile: candidate.value, strike: candidate.strike };
                 }
             }
             return undefined;
-        };
-        Grid.prototype.eachCell = function (callback) {
-            for (var x = 0; x < this.size; x++) {
-                for (var y = 0; y < this.size; y++) {
-                    callback(x, y, this.cells[x][y]);
-                }
-            }
         };
         Grid.prototype.initState = function (size, state) {
             var cells = new Array(size);

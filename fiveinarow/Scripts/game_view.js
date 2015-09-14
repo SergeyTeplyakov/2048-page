@@ -4,13 +4,27 @@
 var View;
 (function (View) {
     var GameView = (function () {
-        function GameView(firstPlayerName, secondPlayerName) {
+        function GameView(gridSize, firstPlayerName, secondPlayerName) {
             this.moves = [];
             this.tileContainer = document.querySelector(".tile-container");
             this.firstPlayerScoreContainer = document.querySelector(".first-player-container");
             this.secondPlayerScoreContainer = document.querySelector(".second-player-container");
             this.messageContainer = document.querySelector(".game-message");
             this.gameHintContainer = document.querySelector(".game-intro");
+            // This stuff is not working properly!
+            //let gridContainer = document.querySelector(".grid-container");
+            //let id = 0;
+            //for (let n = 0; n < gridSize; n++) {
+            //    var gridRow = document.createElement("div");
+            //    for (let col = 0; col < gridSize; col++) {
+            //        let columnDiv = document.createElement("div");
+            //        columnDiv.classList.add("grid-cell");
+            //        columnDiv.id = id.toString();
+            //        gridRow.appendChild(columnDiv);
+            //        id++;
+            //    }
+            //    gridContainer.appendChild(gridRow);
+            //}
             // TODO: have no idea how to change player names!
         }
         GameView.prototype.introduceNextPlayer = function (playerName) {
@@ -36,6 +50,12 @@ var View;
             var message = winner + ": You win!";
             this.messageContainer.classList.add(type);
             this.messageContainer.getElementsByTagName("p")[0].textContent = message;
+        };
+        GameView.prototype.setWinningStrike = function (tile, cells) {
+            for (var _i = 0; _i < cells.length; _i++) {
+                var cell = cells[_i];
+                this.addTile(cell.x, cell.y, tile, true);
+            }
         };
         GameView.prototype.draw = function () {
             var type = "game-over";
@@ -73,13 +93,17 @@ var View;
                 container.removeChild(container.firstChild);
             }
         };
-        GameView.prototype.addTile = function (x, y, tile) {
+        GameView.prototype.addTile = function (x, y, tile, isWinning) {
             var wrapper = document.createElement("div");
             var inner = document.createElement("div");
             // TODO: need to call getTileClass!
             var positionClass = getPositionClass({ x: x, y: y });
             // We can't use classlist because it somehow glitches when replacing classes
-            var classes = ["tile", "tile-" + Model.getTileDisplayClass(tile), positionClass];
+            var tileClass = "tile-" + Model.getTileDisplayClass(tile);
+            if (isWinning) {
+                tileClass += "-Win";
+            }
+            var classes = ["tile", tileClass, positionClass];
             this.applyClasses(wrapper, classes);
             inner.classList.add("tile-inner");
             inner.textContent = Model.getTileString(tile);
