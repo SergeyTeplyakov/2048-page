@@ -1,5 +1,5 @@
 /// <reference path="state.ts"/>
-/// <reference path="Utils.ts"/>
+/// <reference path="utils.ts"/>
 /// <reference path="contract.ts"/>
 var Model;
 (function (Model) {
