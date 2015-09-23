@@ -1,6 +1,6 @@
 // TODO: make all files consistent: utils.ts?
-var Utils;
-(function (Utils) {
+var Helpers;
+(function (Helpers) {
     function forEach(array, callback) {
         var length = array.length;
         for (var x = 0; x < length; x++) {
@@ -10,6 +10,6 @@ var Utils;
             }
         }
     }
-    Utils.forEach = forEach;
-})(Utils || (Utils = {}));
-//# sourceMappingURL=Utils.js.map
+    Helpers.forEach = forEach;
+})(Helpers || (Helpers = {}));
+//# sourceMappingURL=helpers.js.map
